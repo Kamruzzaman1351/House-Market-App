@@ -1,10 +1,12 @@
-import {useState} from 'react'
+import {useState, useContext} from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRightIcon, VisibilityIcon } from '../assets'
-
+import SingInSignUpContext from '../contexts/SignInSignUpContext'
 
 const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false)
+  const { signUnFormData, onChange, handleSignUpFormSubmit } = useContext(SingInSignUpContext)
+  const {name, email, password} = signUnFormData
   return (
     <>
       <div className="pageContainer">
@@ -12,22 +14,22 @@ const SignupPage = () => {
           <p className="pageHeader">Sign Up Now</p>
         </header>
         <main>
-          <form>
+          <form onSubmit={(e) => handleSignUpFormSubmit(e)}>
             <input 
               type="text"
               id="name"
               className="nameInput"
               placeholder="Name"
-              value=""
-              onChange={()=>{}}
+              value={name}
+              onChange={(e)=>onChange(e, "signUp")}
             />
             <input 
               type="email"
               id="email"
               className="emailInput"
               placeholder="Email"
-              value=""
-              onChange={()=>{}}
+              value={email}
+              onChange={(e)=>onChange(e, "signUp")}
             />
             <div className='passwordInputDiv'>
               <input 
@@ -35,7 +37,8 @@ const SignupPage = () => {
                 id="password"
                 className="passwordInput"
                 placeholder="Password"
-                onChange={()=>{}}
+                value={password}
+                onChange={(e)=>onChange(e, "signUp")}
               />
               <img src={VisibilityIcon} alt="Show Password"
                 className="showPassword" 

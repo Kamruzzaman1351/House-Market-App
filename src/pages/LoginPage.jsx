@@ -1,12 +1,14 @@
-import {useState} from 'react'
+import {useState, useContext} from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRightIcon, VisibilityIcon } from '../assets'
-
+import SingInSignUpContext from '../contexts/SignInSignUpContext'
 
 
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false)
+  const {signInFormData, onChange, handleSignInFormSubmit} = useContext(SingInSignUpContext)
+  const {email, password} = signInFormData
   return (
     <>
       <div className="pageContainer">
@@ -14,13 +16,14 @@ const LoginPage = () => {
           <p className="pageHeader">WellCome</p>
         </header>
         <main>
-          <form>
+          <form onSubmit={(e)=> handleSignInFormSubmit(e)}>
             <input 
               type="email"
               id="email"
               className="emailInput"
               placeholder="Email"
-              onChange={()=>{}}
+              value={email}
+              onChange={(e)=>onChange(e, "signIn")}
             />
             <div className='passwordInputDiv'>
               <input 
@@ -28,7 +31,8 @@ const LoginPage = () => {
                 id="password"
                 className="passwordInput"
                 placeholder="Password"
-                onChange={()=>{}}
+                value={password}
+                onChange={(e)=>onChange(e, "signIn")}
               />
               <img src={VisibilityIcon} alt="Show Password"
                 className="showPassword" 
