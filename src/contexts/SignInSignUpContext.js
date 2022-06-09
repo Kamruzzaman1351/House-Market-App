@@ -1,11 +1,14 @@
 import { createContext, useState } from "react";
-
-
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { setDoc, doc, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase.config"
+import { useNavigate } from "react-router-dom";
 const SingInSignUpContext = createContext()
 
 
 
 export const SingInSignUpProvider = ({ children }) => {
+    const navigate = useNavigate()
     const [signInFormData, setSignInFromData] = useState({
         email: "",
         password: "",
@@ -35,9 +38,35 @@ export const SingInSignUpProvider = ({ children }) => {
         console.log("working")
     }
 
-    const handleSignUpFormSubmit = (e) => {
+    const handleSignUpFormSubmit = async(e, formData) => {
         e.preventDefault()
-        console.log("working")
+        const {name, email, password} = formData
+        try {
+            const auth = getAuth()
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+            const user = userCredential.user
+            updateProfile(auth.currentUser, {
+                displayName: name,
+            })
+
+            const copyFormData = {...formData}
+            delete copyFormData.password
+            copyFormData.timestamp = serverTimestamp()
+            console.log(copyFormData)
+            // Store Data Into Database
+            await setDoc(doc(db, "users", user.uid), copyFormData)
+            
+            navigate("/");
+            setSignUnFromData({
+                name:"",
+                email: "",
+                password: "",
+            })
+        } catch (error) {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorMessage, errorCode)
+        }
     }
 
     return <SingInSignUpContext.Provider 

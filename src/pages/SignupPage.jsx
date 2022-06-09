@@ -14,7 +14,7 @@ const SignupPage = () => {
           <p className="pageHeader">Sign Up Now</p>
         </header>
         <main>
-          <form onSubmit={(e) => handleSignUpFormSubmit(e)}>
+          <form onSubmit={(e) => handleSignUpFormSubmit(e, signUnFormData)}>
             <input 
               type="text"
               id="name"
@@ -49,7 +49,7 @@ const SignupPage = () => {
               <p className="signInText">
                 Sign Up
               </p>
-              <button className="signInButton">
+              <button className="signUpButton">
                 <ArrowRightIcon fill="#ffffff" width="34px" height="34px" />
               </button>
             </div>
