@@ -2,7 +2,7 @@ import {useState, useContext} from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRightIcon, VisibilityIcon } from '../assets'
 import SingInSignUpContext from '../contexts/SignInSignUpContext'
-
+import { OAuth } from '../components'
 const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false)
   const { signUnFormData, onChange, handleSignUpFormSubmit } = useContext(SingInSignUpContext)
@@ -54,10 +54,9 @@ const SignupPage = () => {
               </button>
             </div>
           </form>
-
-          {/* Googel SignIn */}
+          <OAuth />
           <div>
-            <p style={{textAlign:"center",marginTop:"50px"}}>Already have an account ?</p>
+            <p style={{textAlign:"center",marginTop:"10px"}}>Already have an account ?</p>
             <Link to="/login" className='registerLink' style={{textAlign:"center",marginTop:"10px"}}>
               Sign In Instead
             </Link>
