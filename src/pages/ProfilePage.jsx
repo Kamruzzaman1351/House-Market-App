@@ -1,24 +1,92 @@
 import {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { getAuth } from 'firebase/auth'
+import { getAuth, updateProfile } from 'firebase/auth'
+import { db } from '../firebase.config'
+import {updateDoc, doc } from "firebase/firestore"
 const ProfilePage = () => {
   const navigate = useNavigate()
-  const [user, setUser] = useState(null)
   const auth = getAuth()
-  
-  useEffect(() => {
-    if(auth.currentUser) {
-      setUser(auth.currentUser)
-    } else{
-      toast.error("Please Sign In !", {autoClose:1500})
-      navigate("/login")
+  const [formData, setFormData] = useState({
+    name: auth.currentUser.displayName,
+    email: auth.currentUser.email,
+  })
+  const {name, email} = formData
+  const [changeDetails, setChangeDetails] = useState(false)
+
+  const handleLogout = () => {
+      auth.signOut()
+      navigate("/")
+  }
+  const onSubmit = async() => {
+   try {
+    if(auth.currentUser.displayName !== name) {
+      await updateProfile(auth.currentUser, {
+        displayName: name
+      })
+      const userRef = doc(db, "users", auth.currentUser.uid)
+      await updateDoc(userRef, {
+        name
+      })
+      toast.success("Profile Updated", {autoClose:1000})
     }
-  }, [])
-  
-  return user 
-    ? <h1>{user.displayName}</h1> 
-    :<p>Please Sign Up </p> 
+    
+   } catch (error) {
+    toast.error("Can't Update Profile", {autoClose:2000})
+   }
+  }
+  const onChange = (e) => {
+      setFormData((prevState) => ({
+        ...prevState,
+        [e.target.id]: e.target.value,
+      }))
+  }
+
+
+
+
+  return (
+    <>
+      <div className="profile">
+        <header className="profileHeader">
+          <p className="pageHeader">My Profile</p>
+          <button className="logOut" type="button" onClick={handleLogout}>
+            Logout
+          </button>
+        </header>
+        <main>
+          <div className="profileDetailsHeader">
+            <p className="profileDetailsText">Personal Detailes</p>
+            <p className="changePersonalDetails"
+              onClick={() => {
+                changeDetails && onSubmit()
+                setChangeDetails((prevState) => !prevState)
+              }}
+            >
+                { changeDetails ? "Done" : "Change" }
+            </p>
+          </div>
+          <div className="profileCard">
+              <form>
+                <input type="text" id="name" 
+                  className={!changeDetails ? "profileName" : "profileNameActive"}
+                  value={name}
+                  disabled={!changeDetails}
+                  onChange={onChange}
+                />
+                <input type="text" id="email" 
+                  className="profileEmail"
+                  value={email}
+                  disabled
+                />
+              </form>
+          </div>
+        </main>
+      </div>
+    </>
+
+  )
+   
   
 }
 
