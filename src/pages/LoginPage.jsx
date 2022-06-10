@@ -16,7 +16,7 @@ const LoginPage = () => {
           <p className="pageHeader">WellCome</p>
         </header>
         <main>
-          <form onSubmit={(e)=> handleSignInFormSubmit(e)}>
+          <form onSubmit={(e)=> handleSignInFormSubmit(e, signInFormData)}>
             <input 
               type="email"
               id="email"

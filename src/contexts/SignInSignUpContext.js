@@ -1,8 +1,10 @@
 import { createContext, useState } from "react";
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { toast } from "react-toastify";
+import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
 import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase.config"
 import { useNavigate } from "react-router-dom";
+import { async } from "@firebase/util";
 const SingInSignUpContext = createContext()
 
 
@@ -33,9 +35,18 @@ export const SingInSignUpProvider = ({ children }) => {
         }
     }
 
-    const handleSignInFormSubmit = (e) => {
+    const handleSignInFormSubmit = async(e, signInFormData) => {
         e.preventDefault()
-        console.log("working")
+        const {email, password} = signInFormData
+        try {
+            const auth = getAuth()
+            const userCredential = await signInWithEmailAndPassword(auth, email, password)
+            const user = userCredential.user
+            toast.success(`${user.displayName} are LogedIn`, {autoClose:1000})
+            navigate("/")
+        } catch (error) {
+            toast.error("User Credential does not match", {autoClose:3000})
+        }
     }
 
     const handleSignUpFormSubmit = async(e, formData) => {
@@ -52,10 +63,9 @@ export const SingInSignUpProvider = ({ children }) => {
             const copyFormData = {...formData}
             delete copyFormData.password
             copyFormData.timestamp = serverTimestamp()
-            console.log(copyFormData)
             // Store Data Into Database
             await setDoc(doc(db, "users", user.uid), copyFormData)
-            
+            toast.success(`You are logedIn ${user.displayName}`, {autoClose:1000})
             navigate("/");
             setSignUnFromData({
                 name:"",
@@ -63,9 +73,7 @@ export const SingInSignUpProvider = ({ children }) => {
                 password: "",
             })
         } catch (error) {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorMessage, errorCode)
+            toast.error("Something Went wrong!", {autoClose: 3000})
         }
     }
 
