@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { HomePage, ProfilePage, OffersPage, SignupPage, LoginPage, ForgotPassword } from "./pages"
-import { Navbar } from "./components";
+import { Navbar, ProvateRoute } from "./components";
 
 
 function App() {
@@ -10,7 +10,9 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile" element={<ProvateRoute />}>
+          <Route path="/profile" element={<ProfilePage />} />
+        </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/offers" element={<OffersPage />} />

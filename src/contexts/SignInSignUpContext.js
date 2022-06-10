@@ -4,7 +4,8 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithEmail
 import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase.config"
 import { useNavigate } from "react-router-dom";
-import { async } from "@firebase/util";
+
+
 const SingInSignUpContext = createContext()
 
 
@@ -44,6 +45,10 @@ export const SingInSignUpProvider = ({ children }) => {
             const user = userCredential.user
             toast.success(`${user.displayName} are LogedIn`, {autoClose:1000})
             navigate("/")
+            setSignInFromData({
+                email: "",
+                password: ""
+            })
         } catch (error) {
             toast.error("User Credential does not match", {autoClose:3000})
         }
