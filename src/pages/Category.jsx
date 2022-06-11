@@ -1,5 +1,5 @@
 import React, {useEffect, useContext, useRef} from 'react'
-import { PageHeader, Spinner } from '../components'
+import { PageHeader, Spinner, ListingItem } from '../components'
 import { useParams } from 'react-router-dom'
 import CategoryContext from '../contexts/CategoryContext'
 const Category = () => {
@@ -26,7 +26,11 @@ const Category = () => {
                         <main>
                             <ul className="categoryListings">
                                 {listings.map((listing) => (
-                                    <li key={listing.id}>{listing.data.name}</li>
+                                    <ListingItem 
+                                        key={listing.id}
+                                        listing={listing.data}
+                                        id={listing.id}
+                                    />
                                 ))}
                             </ul>
                         </main>

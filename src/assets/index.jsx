@@ -1,6 +1,8 @@
 export { ReactComponent as BadgeIcon } from "./svg/badgeIcon.svg"
 export { ReactComponent as BathtubIcon } from "./svg/bathtubIcon.svg"
+export { default as bathtubIcon } from "./svg/bathtubIcon.svg"
 export { ReactComponent as BedIcon } from "./svg/bedIcon.svg"
+export { default as bedIcon } from "./svg/bedIcon.svg"
 export { ReactComponent as CheckIcon } from "./svg/checkIcon.svg"
 export { ReactComponent as DeleteIcon } from "./svg/deleteIcon.svg"
 export { ReactComponent as EditIcon } from "./svg/editIcon.svg"
