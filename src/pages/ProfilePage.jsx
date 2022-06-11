@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import { getAuth, updateProfile } from 'firebase/auth'
 import { db } from '../firebase.config'
 import {updateDoc, doc } from "firebase/firestore"
+import { PageHeader } from '../components'
 const ProfilePage = () => {
   const navigate = useNavigate()
   const auth = getAuth()
@@ -49,7 +50,7 @@ const ProfilePage = () => {
     <>
       <div className="profile">
         <header className="profileHeader">
-          <p className="pageHeader">My Profile</p>
+          <PageHeader pageTitle='My Profile' />
           <button className="logOut" type="button" onClick={handleLogout}>
             Logout
           </button>

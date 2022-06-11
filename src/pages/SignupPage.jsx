@@ -2,7 +2,7 @@ import {useState, useContext} from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRightIcon, VisibilityIcon } from '../assets'
 import SingInSignUpContext from '../contexts/SignInSignUpContext'
-import { OAuth } from '../components'
+import { OAuth, PageHeader } from '../components'
 const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false)
   const { signUnFormData, onChange, handleSignUpFormSubmit } = useContext(SingInSignUpContext)
@@ -10,9 +10,7 @@ const SignupPage = () => {
   return (
     <>
       <div className="pageContainer">
-        <header>
-          <p className="pageHeader">Sign Up Now</p>
-        </header>
+        <PageHeader pageTitle='Sign Up Now' />
         <main>
           <form onSubmit={(e) => handleSignUpFormSubmit(e, signUnFormData)}>
             <input 

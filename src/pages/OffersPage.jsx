@@ -1,8 +1,10 @@
 import React from 'react'
-
+import { PageHeader } from '../components'
 const OffersPage = () => {
   return (
-    <div>OffersPage</div>
+    <div className='pageContainer'>
+      <PageHeader pageTitle='Offers' />
+    </div>
   )
 }
 

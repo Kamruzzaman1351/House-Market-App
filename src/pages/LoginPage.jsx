@@ -2,7 +2,7 @@ import {useState, useContext} from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRightIcon, VisibilityIcon } from '../assets'
 import SingInSignUpContext from '../contexts/SignInSignUpContext'
-import { OAuth } from '../components'
+import { OAuth, PageHeader } from '../components'
 
 
 const LoginPage = () => {
@@ -12,9 +12,7 @@ const LoginPage = () => {
   return (
     <>
       <div className="pageContainer">
-        <header>
-          <p className="pageHeader">WellCome</p>
-        </header>
+        <PageHeader pageTitle='WellCome' />
         <main>
           <form onSubmit={(e)=> handleSignInFormSubmit(e, signInFormData)}>
             <input 

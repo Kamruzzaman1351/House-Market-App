@@ -16,3 +16,5 @@ export { ReactComponent as PersonOutlineIcon } from "./svg/personOutlineIcon.svg
 export { ReactComponent as ShareIcon } from "./svg/shareIcon.svg"
 export { ReactComponent as UploadIcon } from "./svg/uploadIcon.svg"
 export { default as VisibilityIcon } from "./svg/visibilityIcon.svg"
+export { default as rentCategoryImage } from "./jpg/rentCategoryImage.jpg"
+export { default as sellCategoryImage } from "./jpg/sellCategoryImage.jpg"
