@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { HomePage, ProfilePage, OffersPage, SignupPage, LoginPage, ForgotPassword } from "./pages"
+import { HomePage, ProfilePage, Category, OffersPage, SignupPage, LoginPage, ForgotPassword } from "./pages"
 import { Navbar, PrivateRoute } from "./components";
 
 
@@ -10,6 +10,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/category/:categoryName" element={<Category />} />
         <Route path="/profile" element={<PrivateRoute />}>
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
