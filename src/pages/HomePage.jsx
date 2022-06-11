@@ -21,7 +21,7 @@ const HomePage = () => {
               Places for Rent
             </p>
           </Link>
-          <Link to="/category/sell" >
+          <Link to="/category/sale" >
             <img 
               src={sellCategoryImage} 
               className="exploreCategoryImg"

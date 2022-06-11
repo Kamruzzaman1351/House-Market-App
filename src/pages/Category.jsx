@@ -1,13 +1,42 @@
-import React from 'react'
-import { PageHeader } from '../components'
+import React, {useEffect, useContext, useRef} from 'react'
+import { PageHeader, Spinner } from '../components'
 import { useParams } from 'react-router-dom'
+import CategoryContext from '../contexts/CategoryContext'
 const Category = () => {
+    const isMounted = useRef(true)
     const {categoryName} = useParams();
-  return (
-    <div className='pageContainer'>
-        <PageHeader pageTitle={`${categoryName.toLocaleUpperCase()} Category`} />
-    </div>
-  )
+    
+    const {listings, loading, fetchListings} = useContext(CategoryContext)
+    useEffect(() => {
+        if(isMounted) {
+            fetchListings(categoryName)
+        }
+        return () => {
+            isMounted.current = false
+        }
+    }, [isMounted])
+
+    return (
+        <div className='pageContainer'>
+            <PageHeader pageTitle={categoryName === "rent" ? "Place For Rent" : "Place form Seal"} />
+            { loading ? (
+                    <Spinner />
+                ) : listings && listings.length > 0 ? (
+                    <>
+                        <main>
+                            <ul className="categoryListings">
+                                {listings.map((listing) => (
+                                    <li key={listing.id}>{listing.data.name}</li>
+                                ))}
+                            </ul>
+                        </main>
+                    </>
+                ) : (
+                    <p>No place for {categoryName}</p>
+                ) 
+            }
+        </div>
+    )
 }
 
 export default Category
