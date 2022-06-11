@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react"; 
+import { createContext, useState } from "react"; 
 import { collection, getDocs, query, where, orderBy, limit, startAfter } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { toast } from "react-toastify";
@@ -41,7 +41,35 @@ export const CategoryProvider = ({ children }) => {
         }
     }
 
+    // Fetching Offers
+    const fetchOfferListings = async () => {
+        try {
+            setLoading(true)
+            // Get referance
+            const listingsRef = collection(db, "listings")
 
+            // Create query
+            const q = query( 
+                        listingsRef,
+                        where("offer", "==", true),
+                        orderBy("timestamp", "desc"),
+                        limit(10)
+                    )
+            // Execute query
+            const querySnap = await getDocs(q)
+            const listings = []
+            querySnap.forEach((doc) => {
+                return listings.push({
+                    id: doc.id,
+                    data: doc.data()
+                })
+            })            
+            setListings(listings)
+            setLoading(false)
+        } catch (error) {
+            toast.error("Could not get the offers listings", {autoClose:2000})
+        }
+    }
 
 
     return <CategoryContext.Provider 
@@ -49,6 +77,7 @@ export const CategoryProvider = ({ children }) => {
             listings,
             loading,
             fetchListings,
+            fetchOfferListings
         }}
     >
         { children }

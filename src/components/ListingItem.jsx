@@ -32,6 +32,15 @@ const ListingItem = ({listing, id, onDelete}) => {
                     <p className="categoryListingInfoText">
                         {bathrooms > 1 ? `${bathrooms} Bathrooms`: "1 Bathroom"}
                     </p>
+                    
+                </div>
+                <div className="categoryListingInfoDiv">
+                    <p className="categoryListingInfoText">
+                        {parking && "Parking avaiable"}
+                    </p>
+                    <p className="categoryListingInfoText">
+                        {furnished && "Full Furnished"}
+                    </p>
                 </div>
             </div>
         </Link>
