@@ -53,7 +53,7 @@ const SignupPage = () => {
             </div>
           </form>
           <OAuth />
-          <div>
+          <div style={{marginBottom:"100px"}}>
             <p style={{textAlign:"center",marginTop:"10px"}}>Already have an account ?</p>
             <Link to="/login" className='registerLink' style={{textAlign:"center",marginTop:"10px"}}>
               Sign In Instead

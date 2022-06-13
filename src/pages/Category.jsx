@@ -17,7 +17,7 @@ const Category = () => {
     }, [isMounted])
 
     return (
-        <div className='pageContainer'>
+        <div className='pageContainer category'>
             <PageHeader pageTitle={categoryName === "rent" ? "Place For Rent" : "Place form Seal"} />
             { loading ? (
                     <Spinner />
