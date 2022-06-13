@@ -68,7 +68,7 @@ const Listing = () => {
 
             {auth.currentUser?.uid !== listing?.userRef && (
             <Link
-                to={`/contact/${listing.userRef}?listingName=${listing.name}`}
+                to={`/contact/${listing?.userRef}?listingName=${listing?.name}`}
                 className='primaryButton'
             >
                 Contact Landlord
