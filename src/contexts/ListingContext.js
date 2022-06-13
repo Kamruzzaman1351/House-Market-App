@@ -30,7 +30,7 @@ export const ListingProvider = ({ children }) => {
         latitude:"",
         images:{}
     })
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
     const onMutate = (e) => {
         let boolean = null
         if(e.target.value === "true") {
@@ -120,6 +120,7 @@ export const ListingProvider = ({ children }) => {
             geolocation,
             location: address,
             timestamp: serverTimestamp(),
+            userRef: auth.currentUser.uid
         }
 
         delete formDataCopy.images
@@ -138,6 +139,7 @@ export const ListingProvider = ({ children }) => {
    return <ListingContext.Provider 
         value={{
             formData,
+            loading,
             setFormData,
             onMutate,
             onFormSubmit
