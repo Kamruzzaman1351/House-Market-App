@@ -1,13 +1,13 @@
 
 
 const ListingForm = ({ formData, onSubmit, onMutate }) => {
-    const {type, name, bathrooms, bedrooms, parking, furnished, address, offer, regularPrice, longitude, latitude, discountedPrice  } = formData
+    const {type, name, bathrooms, bedrooms, parking, furnished, address, offer, regularPrice, longitude, latitude, discountedPrice, images  } = formData
     const geolocationEnabled = false;
     
     
     
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={(e)=> onSubmit(e,formData)}>
         <label className='formLabel'>Sell / Rent</label>
         <div className='formButtons'>
         <button

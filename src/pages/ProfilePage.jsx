@@ -5,6 +5,8 @@ import { getAuth, updateProfile } from 'firebase/auth'
 import { db } from '../firebase.config'
 import {updateDoc, doc } from "firebase/firestore"
 import { PageHeader } from '../components'
+import { Link } from 'react-router-dom'
+import { homeIcon, arrowRightIcon } from '../assets'
 const ProfilePage = () => {
   const navigate = useNavigate()
   const auth = getAuth()
@@ -82,6 +84,11 @@ const ProfilePage = () => {
                 />
               </form>
           </div>
+          <Link to='/create-listing' className='createListing'>
+            <img src={homeIcon} alt='home' />
+            <p>Sell or rent your home</p>
+            <img src={arrowRightIcon} alt='arrow right' />
+          </Link>
         </main>
       </div>
     </>
