@@ -1,10 +1,14 @@
-import {useState, useContext, useEffect, useRef} from 'react'
+import {useContext, useEffect, useRef} from 'react'
 import ListingContext from '../contexts/ListingContext'
 import { useParams, Link } from 'react-router-dom'
 import { Spinner } from '../components'
 import { toast } from 'react-toastify'
 import { shareIcon } from '../assets'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Scrollbar, A11y, EffectFade, Autoplay } from 'swiper';
+import 'swiper/css/bundle';
+import "swiper/css/autoplay"
 const Listing = () => {
     const params = useParams()
     const isMounted = useRef(true)
@@ -31,6 +35,34 @@ const Listing = () => {
   return (
     <main>
         {/* Slider Show  */}
+        {listing && (
+            <Swiper
+                modules={[Navigation, Pagination, Scrollbar, A11y, EffectFade, Autoplay]}
+                slidesPerView={1}
+                navigation
+                pagination={{ clickable: true }}
+                effect="fade"
+                autoplay={true}
+            >
+                {listing.imageUrls.map((url, index) => (
+                    <SwiperSlide key={index} >
+                        <div className='swiperSlideDiv' 
+                            style={{
+                                background: `url(${listing.imageUrls[index]}) center no-repeat`,
+                                backgroundSize: 'cover',
+                                width:"100%",
+                                height:"400px",
+                                position:"relative"
+                            }}
+                            
+                        > 
+                        </div> 
+                    </SwiperSlide>
+
+                ))}
+                
+            </Swiper>
+        )}
         <div className="shareIconDiv" onClick={onShare}>
             <img src={shareIcon} alt="Social Share" />
         </div>
@@ -67,7 +99,7 @@ const Listing = () => {
             <p className='listingLocationTitle'>Location</p>
             {/* Map Goes Here */}
             <div className='leafletContainer'>
-                <MapContainer
+                {/* <MapContainer
                     style={{ height: '100%', width: '100%' }}
                     center={[listing?.geolocation.lat, listing?.geolocation.lng]}
                     zoom={13}
@@ -83,7 +115,7 @@ const Listing = () => {
                     >
                         <Popup>{listing?.location}</Popup>
                     </Marker>
-                </MapContainer>
+                </MapContainer> */}
             </div>
 
             {auth.currentUser?.uid !== listing?.userRef && (
