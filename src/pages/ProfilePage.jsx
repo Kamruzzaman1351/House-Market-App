@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { getAuth, updateProfile } from 'firebase/auth'
 import { db } from '../firebase.config'
-import {updateDoc, doc, getDocs, collection, query, where, orderBy } from "firebase/firestore"
+import {updateDoc, doc, getDocs, collection, query, where, orderBy, deleteDoc } from "firebase/firestore"
 import { PageHeader, ListingItem } from '../components'
 import { Link } from 'react-router-dom'
 import { homeIcon, arrowRightIcon } from '../assets'
@@ -37,7 +37,7 @@ const ProfilePage = () => {
       }
     }
     getListings()
-  }, [])
+  }, [auth.currentUser.uid])
   const {name, email} = formData
   const [changeDetails, setChangeDetails] = useState(false)
 
@@ -69,8 +69,13 @@ const ProfilePage = () => {
       }))
   }
 
-  const onDelete = () => {
-
+  const onDelete = async(listingId) => {
+    if(window.confirm("Are You Sure!")) {
+      await deleteDoc(doc(db, "listings", listingId))
+      const updaterdListings = listings.filter((listing) => listing.id !== listingId)
+      setListings(updaterdListings)
+      toast.success("Listing Deleted Succesfully", {autoClose: 1500})
+    }
   }
 
 
@@ -138,7 +143,7 @@ const ProfilePage = () => {
                     key={listing.id}
                     listing={listing.data}
                     id={listing.id}
-                    onDelete={onDelete}
+                    onDelete={()=> onDelete(listing.id)}
                   />
                 ))}
               </ul>

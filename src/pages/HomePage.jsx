@@ -8,7 +8,7 @@ const HomePage = () => {
     navigate(path)
   }
   return (
-    <div className="pageContainer">
+    <div className="pageContainer profile">
       <PageHeader pageTitle="Explor" />
       <Slider customFunc={(path)=>onClick(path)}/>
       <main>
