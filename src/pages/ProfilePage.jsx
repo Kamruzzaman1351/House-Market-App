@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { getAuth, updateProfile } from 'firebase/auth'
 import { db } from '../firebase.config'
-import {updateDoc, doc } from "firebase/firestore"
-import { PageHeader } from '../components'
+import {updateDoc, doc, getDocs, collection, query, where, orderBy } from "firebase/firestore"
+import { PageHeader, ListingItem } from '../components'
 import { Link } from 'react-router-dom'
 import { homeIcon, arrowRightIcon } from '../assets'
 const ProfilePage = () => {
@@ -14,6 +14,30 @@ const ProfilePage = () => {
     name: auth.currentUser.displayName,
     email: auth.currentUser.email,
   })
+  const [listings, setListings] = useState(null)
+  const[loading, setLoading] = useState(true)
+  useEffect(() => {
+    const getListings = async() => {
+      try {
+        setLoading(true)
+        const listingRef = collection(db, "listings")
+        const q = query(listingRef, where("userRef", "==", auth.currentUser.uid), orderBy("timestamp", "desc"))
+        const querySnap = await getDocs(q)
+        const listings = []
+        querySnap.forEach((doc)=>{
+          return listings.push({
+            id: doc.id,
+            data: doc.data()
+          })
+        })
+        setListings(listings)
+        setLoading(false)
+      } catch (error) {
+        console.log("No listing")
+      }
+    }
+    getListings()
+  }, [])
   const {name, email} = formData
   const [changeDetails, setChangeDetails] = useState(false)
 
@@ -45,7 +69,9 @@ const ProfilePage = () => {
       }))
   }
 
+  const onDelete = () => {
 
+  }
 
 
   return (
@@ -89,6 +115,35 @@ const ProfilePage = () => {
             <p>Sell or rent your home</p>
             <img src={arrowRightIcon} alt='arrow right' />
           </Link>
+          <div>
+            {/* <p className='listingText'>Your Listings</p>
+            <ul className='listingsList'>
+              {listings.map((listing) => (
+                <ListingItem
+                  key={listing.id}
+                  listing={listing.data}
+                  id={listing.id}
+                  onDelete={() => onDelete(listing.id)}
+                  onEdit={() => onEdit(listing.id)}
+                />
+              ))}
+            </ul> */}
+          </div>
+          {!loading && listings && (
+            <>
+              <p className='listingText'>Your Listings</p>
+              <ul className='listingsList'>
+                {listings.map((listing) => (
+                  <ListingItem
+                    key={listing.id}
+                    listing={listing.data}
+                    id={listing.id}
+                    onDelete={onDelete}
+                  />
+                ))}
+              </ul>
+            </>
+          )}
         </main>
       </div>
     </>

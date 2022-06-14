@@ -8,10 +8,10 @@ import 'swiper/css/bundle';
 import "swiper/css/autoplay"
 import Spinner from './Spinner';
 
-const Slider = () => {
+const Slider = ({customFunc}) => {
     const [loading, setLoading] = useState(true)
     const [listings, setListings] = useState(null)
-    const navigate = useNavigate()
+    
     useEffect(() => {
         const getListings = async() => {
             try {
@@ -54,7 +54,9 @@ const Slider = () => {
             autoplay={true}
         >
             {listings.map((listing) => (
-                <SwiperSlide key={listing.id} >
+                <SwiperSlide key={listing.id} 
+                    onClick={() => customFunc(`/category/${listing.data.type}/${listing.id}`)}
+                >
                     <div className='swiperSlideDiv' 
                         style={{
                             background: `url(${listing.data.imageUrls[0]}) center no-repeat`,

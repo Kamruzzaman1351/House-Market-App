@@ -14,7 +14,7 @@ const OffersPage = () => {
         }
     }, [isMounted])
   return (
-    <div className='pageContainer'>
+    <div className='pageContainer profile'>
       <PageHeader pageTitle='Offers' />
       { loading ? (
             <Spinner />

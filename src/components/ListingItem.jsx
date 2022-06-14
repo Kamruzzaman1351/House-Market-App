@@ -1,8 +1,11 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import { bathtubIcon, bedIcon, DeleteIcon } from '../assets'
+import { getAuth } from 'firebase/auth'
 const ListingItem = ({listing, id, onDelete}) => {
-    const {bathrooms, bedrooms, discountedPrice, furnished, geolocation, imageUrls, location, name, offer, parking, regularPrice, type, userRef} = listing
+    const auth = getAuth()
+    
+    const {bathrooms, bedrooms, discountedPrice, furnished, imageUrls, location, name, offer, parking, regularPrice, type, userRef} = listing
   return (
     <li className="categoryListing">
         <Link to={`/category/${type}/${id}`}
@@ -44,12 +47,12 @@ const ListingItem = ({listing, id, onDelete}) => {
                 </div>
             </div>
         </Link>
-        {true && (
+        {onDelete && (
             <DeleteIcon fill="rgb(231,76,60)"
                 className="removeIcon"
                 onClick={() => onDelete(id, name)}
             />
-        )}
+        ) }
     </li>
   )
 }
