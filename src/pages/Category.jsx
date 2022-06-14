@@ -6,7 +6,7 @@ const Category = () => {
     const isMounted = useRef(true)
     const {categoryName} = useParams();
     
-    const {listings, loading, fetchListings} = useContext(CategoryContext)
+    const {listings, loading, fetchListings, fetchMoreListing, fetchLastListing} = useContext(CategoryContext)
     useEffect(() => {
         if(isMounted) {
             fetchListings(categoryName)
@@ -15,6 +15,9 @@ const Category = () => {
             isMounted.current = false
         }
     }, [isMounted])
+    const onClick = () =>{
+        fetchMoreListing(categoryName)
+    }
 
     return (
         <div className='pageContainer category'>
@@ -34,6 +37,14 @@ const Category = () => {
                                 ))}
                             </ul>
                         </main>
+                        <br/>
+                        <br/>
+                        <br/>
+                        {fetchLastListing && (
+                            <p className='loadMore'
+                                onClick={onClick}
+                            >Load More</p>
+                        )}
                     </>
                 ) : (
                     <p>No place for {categoryName}</p>

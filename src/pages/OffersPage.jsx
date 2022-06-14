@@ -4,7 +4,7 @@ import CategoryContext from '../contexts/CategoryContext'
 
 const OffersPage = () => {
     const isMounted = useRef(true)    
-    const {listings, loading, fetchOfferListings} = useContext(CategoryContext)
+    const {listings, loading, fetchOfferListings, fetchMoreOfferListings, fetchLastOfferListing} = useContext(CategoryContext)
     useEffect(() => {
         if(isMounted) {
             fetchOfferListings()
@@ -13,6 +13,9 @@ const OffersPage = () => {
             isMounted.current = false
         }
     }, [isMounted])
+    const onClick = () =>{
+      fetchMoreOfferListings()
+    }
   return (
     <div className='pageContainer profile'>
       <PageHeader pageTitle='Offers' />
@@ -31,6 +34,14 @@ const OffersPage = () => {
                       ))}
                   </ul>
               </main>
+              <br/>
+              <br/>
+              <br/>
+              {fetchLastOfferListing && (
+                  <p className='loadMore'
+                      onClick={onClick}
+                  >Load More</p>
+              )}
             </>
           ) : (
             <p>No Offers Now</p>
