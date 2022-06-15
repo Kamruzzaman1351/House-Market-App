@@ -77,7 +77,9 @@ const ProfilePage = () => {
       toast.success("Listing Deleted Succesfully", {autoClose: 1500})
     }
   }
-
+  const onEdit = (listingId)=> {
+    navigate(`/edit-listing/${listingId}`)
+  }
 
   return (
     <>
@@ -144,6 +146,7 @@ const ProfilePage = () => {
                     listing={listing.data}
                     id={listing.id}
                     onDelete={()=> onDelete(listing.id)}
+                    onEdit={()=> onEdit(listing.id)}
                   />
                 ))}
               </ul>

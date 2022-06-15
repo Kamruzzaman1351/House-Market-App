@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react'
 import { Link } from 'react-router-dom'
-import { bathtubIcon, bedIcon, DeleteIcon } from '../assets'
+import { bathtubIcon, bedIcon, DeleteIcon, EditIcon } from '../assets'
 import { getAuth } from 'firebase/auth'
-const ListingItem = ({listing, id, onDelete}) => {
+const ListingItem = ({listing, id, onDelete, onEdit}) => {
     const auth = getAuth()
     
     const {bathrooms, bedrooms, discountedPrice, furnished, imageUrls, location, name, offer, parking, regularPrice, type, userRef} = listing
@@ -47,6 +47,12 @@ const ListingItem = ({listing, id, onDelete}) => {
                 </div>
             </div>
         </Link>
+        {onEdit && (
+            <EditIcon fill="rgb(231,76,60)"
+                className="editIcon"
+                onClick={() => onEdit(id)}
+            />
+        ) }
         {onDelete && (
             <DeleteIcon fill="rgb(231,76,60)"
                 className="removeIcon"

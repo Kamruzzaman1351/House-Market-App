@@ -74,6 +74,8 @@ export const ListingProvider = ({ children }) => {
                     case 'running':
                         
                         break;
+                    default:
+                        break
                     }
                 }, 
                 (error) => {

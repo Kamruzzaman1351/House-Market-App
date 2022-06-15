@@ -1,6 +1,6 @@
 
 
-const ListingForm = ({ formData, onSubmit, onMutate }) => {
+const ListingForm = ({ formData, onSubmit, onMutate, edit }) => {
     const {type, name, bathrooms, bedrooms, parking, furnished, address, offer, regularPrice, longitude, latitude, discountedPrice, images  } = formData
     const geolocationEnabled = false;
     
@@ -230,7 +230,7 @@ const ListingForm = ({ formData, onSubmit, onMutate }) => {
         required
         />
         <button type='submit' className='primaryButton createListingButton'>
-        Create Listing
+            {edit? "Edit Listing" : "Create Listing"}
         </button>
     </form>
   )
