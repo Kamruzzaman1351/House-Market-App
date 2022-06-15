@@ -84,7 +84,19 @@ button {
   top: -3.4%;
   right: 20px;
 }
+.allListingDiv {
+  text-align: center;
+  margin-top: 40px;
+}
+.allListingDiv button {
+    background: blue;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 20px;
+    cursor: pointer;
 
+}
 .pageContainer,
 .offers,
 .profile,

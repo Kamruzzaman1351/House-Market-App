@@ -7,6 +7,9 @@ const HomePage = () => {
   const onClick = (path) => {
     navigate(path)
   }
+  const allListings = ()=> {
+    navigate("/all-listings")
+  }
   return (
     <div className="pageContainer profile">
       <PageHeader pageTitle="Explor" />
@@ -35,6 +38,9 @@ const HomePage = () => {
               Places for Sell
             </p>
           </Link>
+        </div>
+        <div className='allListingDiv'>
+          <button onClick={allListings}>All Listings</button>
         </div>
       </main>
     </div>
