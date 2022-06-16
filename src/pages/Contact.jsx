@@ -1,12 +1,14 @@
 import {useState, useEffect} from 'react'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { PageHeader } from '../components'
 import { db } from '../firebase.config'
-import { getDoc, doc } from 'firebase/firestore'
+import { getDoc, doc, addDoc, serverTimestamp, collection } from 'firebase/firestore'
 import { toast } from 'react-toastify'
-
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 const Contact = () => {
+    const auth = getAuth()
+    const navigate = useNavigate()
     const params = useParams()
     const [landlord, setLandload] = useState(null)
     const [message, setMessage] = useState('')
@@ -32,6 +34,31 @@ const Contact = () => {
     const onChange = (e) => {
         setMessage(e.target.value)
     }
+    const onSubmit = (e) => {
+      e.preventDefault()
+      onAuthStateChanged(auth, async (user)=>{
+        if(user) {
+          const copyMessage = {
+            message,
+            from: {
+              email: user.email,
+              name: user.displayName,
+              id: user.uid
+            },
+            listing_name: searchParams.get("listingName"),
+            status: false,
+            to: params.landloadId,
+            timestamp: serverTimestamp(),
+          }
+          await addDoc(collection(db, "messages"), copyMessage)
+          toast.success("Message Send", {autoClose:1500})
+          navigate("/offers")
+        } else {
+          navigate("/login")
+          toast.error("You need to sign in to send a message", {autoClose:1000})
+        }
+      })
+    }
   return (
     <div className='pageContainer profile'>
       <PageHeader pageTitle="Contact Landlord" />
@@ -42,7 +69,7 @@ const Contact = () => {
             <p className='landlordName'>Contact {landlord?.name}</p>
           </div>
 
-          <form className='messageForm'>
+          <form className='messageForm' onSubmit={onSubmit}>
             <div className='messageDiv'>
               <label htmlFor='message' className='messageLabel'>
                 Message
@@ -55,14 +82,10 @@ const Contact = () => {
                 onChange={onChange}
               ></textarea>
             </div>
-
-            <a
-              href={`mailto:${landlord.email}?Subject=${searchParams.get('listingName')}&body=${message}`}
-            >
-              <button type='button' className='primaryButton'>
+              <button type='submit' className='primaryButton'>
                 Send Message
               </button>
-            </a>
+            
           </form>
         </main>
       )}
