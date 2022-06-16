@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import { getAuth, updateProfile } from 'firebase/auth'
 import { db } from '../firebase.config'
 import {updateDoc, doc, getDocs, collection, query, where, orderBy, deleteDoc } from "firebase/firestore"
-import { PageHeader, ListingItem } from '../components'
+import { PageHeader, ListingItem, Message } from '../components'
 import { Link } from 'react-router-dom'
 import { homeIcon, arrowRightIcon } from '../assets'
 const ProfilePage = () => {
@@ -16,6 +16,8 @@ const ProfilePage = () => {
   })
   const [listings, setListings] = useState(null)
   const[loading, setLoading] = useState(true)
+  const [messages, setMessages] = useState(null)
+  const [sender, setSender] = useState(null)
   useEffect(() => {
     const getListings = async() => {
       try {
@@ -40,6 +42,24 @@ const ProfilePage = () => {
   }, [auth.currentUser.uid])
   const {name, email} = formData
   const [changeDetails, setChangeDetails] = useState(false)
+  useEffect( ()=> {
+    const getMessages = async() => {
+      setLoading(true)
+      const messagesRef = collection(db, "messages")
+      const q = query(messagesRef, where("to", "==", auth.currentUser.uid), orderBy("timestamp", "desc"))
+      const querySnap = await getDocs(q)
+      const messages = []
+      querySnap.forEach((doc) => {
+        return messages.push({
+          id: doc.id,
+          data: doc.data()
+        })
+      })
+      setMessages(messages)
+      setLoading(false)
+    }
+    getMessages()
+  }, [auth.currentUser.uid])
 
   const handleLogout = () => {
       auth.signOut()
@@ -123,35 +143,39 @@ const ProfilePage = () => {
             <img src={arrowRightIcon} alt='arrow right' />
           </Link>
           <div>
-            {/* <p className='listingText'>Your Listings</p>
-            <ul className='listingsList'>
-              {listings.map((listing) => (
-                <ListingItem
-                  key={listing.id}
-                  listing={listing.data}
-                  id={listing.id}
-                  onDelete={() => onDelete(listing.id)}
-                  onEdit={() => onEdit(listing.id)}
-                />
-              ))}
-            </ul> */}
+            {!loading && listings && (
+              <>
+                <p className='listingText'>Your Listings</p>
+                <ul className='listingsList'>
+                  {listings.map((listing) => (
+                    <ListingItem
+                      key={listing.id}
+                      listing={listing.data}
+                      id={listing.id}
+                      onDelete={()=> onDelete(listing.id)}
+                      onEdit={()=> onEdit(listing.id)}
+                    />
+                  ))}
+                </ul>
+              </>
+            )}            
           </div>
-          {!loading && listings && (
-            <>
-              <p className='listingText'>Your Listings</p>
-              <ul className='listingsList'>
-                {listings.map((listing) => (
-                  <ListingItem
-                    key={listing.id}
-                    listing={listing.data}
-                    id={listing.id}
-                    onDelete={()=> onDelete(listing.id)}
-                    onEdit={()=> onEdit(listing.id)}
+          {!loading && messages.length !== null && (
+          <>
+            <div>
+              <p className='listingText'>Your Messages</p>
+              <ul className='listingList'>
+                {messages.map((message)=> (
+                  <Message 
+                    key={message.id} 
+                    message={message.data} 
+                    id={message.id}
                   />
                 ))}
               </ul>
-            </>
-          )}
+            </div>
+          </>)}
+                    
         </main>
       </div>
     </>
