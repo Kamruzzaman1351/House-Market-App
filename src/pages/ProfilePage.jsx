@@ -42,24 +42,24 @@ const ProfilePage = () => {
   }, [auth.currentUser.uid])
   const {name, email} = formData
   const [changeDetails, setChangeDetails] = useState(false)
-  useEffect( ()=> {
-    const getMessages = async() => {
-      setLoading(true)
-      const messagesRef = collection(db, "messages")
-      const q = query(messagesRef, where("to", "==", auth.currentUser.uid), orderBy("timestamp", "desc"))
-      const querySnap = await getDocs(q)
-      const messages = []
-      querySnap.forEach((doc) => {
-        return messages.push({
-          id: doc.id,
-          data: doc.data()
-        })
-      })
-      setMessages(messages)
-      setLoading(false)
-    }
+  useEffect( ()=> {    
     getMessages()
   }, [auth.currentUser.uid])
+  const getMessages = async() => {
+    setLoading(true)
+    const messagesRef = collection(db, "messages")
+    const q = query(messagesRef, where("to", "==", auth.currentUser.uid), orderBy("timestamp", "desc"))
+    const querySnap = await getDocs(q)
+    const messages = []
+    querySnap.forEach((doc) => {
+      return messages.push({
+        id: doc.id,
+        data: doc.data()
+      })
+    })
+    setMessages(messages)
+    setLoading(false)
+  }
 
   const handleLogout = () => {
       auth.signOut()
@@ -101,6 +101,14 @@ const ProfilePage = () => {
     navigate(`/edit-listing/${listingId}`)
   }
 
+  const messageStateChange = async (id) => {
+    const messageRef = doc(db, "messages", id)
+    await updateDoc(messageRef, {
+      status: true
+    })
+    getMessages()
+    toast.success("Message Read", {autoClose:1000})
+  }
   return (
     <>
       <div className="profile">
@@ -170,6 +178,7 @@ const ProfilePage = () => {
                     key={message.id} 
                     message={message.data} 
                     id={message.id}
+                    onClick={messageStateChange}
                   />
                 ))}
               </ul>
